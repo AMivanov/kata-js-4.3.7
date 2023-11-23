@@ -1,0 +1,96 @@
+@import url(https://fonts.googleapis.com/css2?family=Roboto&display=swap);
+body {
+  font-family: 'Roboto', sans-serif; }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box; }
+
+ul[class],
+ol[class] {
+  padding: 0; }
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0; }
+
+.wrapper {
+  padding: 3em 5em;
+  background: #C4C4C4;
+  height: 763px;
+  width: 661px;
+  margin: 4em auto;
+  position: relative; }
+
+#search-input {
+  width: 500px;
+  height: 61px;
+  margin: 0 auto;
+  font-size: 48px;
+  font-weight: 400;
+  padding-left: 10px;
+  position: relative; }
+
+#autocom-box {
+  overflow-y: auto;
+  position: absolute;
+  width: 500px;
+  background-color: #fff; }
+
+li {
+  list-style: none;
+  cursor: default; }
+
+#autocom-box li {
+  font-size: 30px;
+  font-weight: 400;
+  padding: 5px 10px;
+  border: 2px solid #000;
+  background: #E3E3E3; }
+
+#autocom-box li:hover {
+  background: #65CDF9;
+  cursor: pointer; }
+
+#results {
+  padding: 0;
+  margin: 300px 0;
+  position: absolute; }
+
+.repository-card {
+  position: relative;
+  width: 503px;
+  height: 101px;
+  padding: 10px 20px;
+  border: 1px solid #000;
+  background: #E27BEB;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 24px; }
+
+.delete_button {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 46px;
+  height: 42px;
+  margin: auto 0 auto 0;
+  background: url("./static/Vector 7.svg") no-repeat, url("./static/Vector 8.svg") no-repeat;
+  cursor: pointer; }
+
+
+/*# sourceMappingURL=style.css.map*/
