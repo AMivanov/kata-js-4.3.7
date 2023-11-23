@@ -1,214 +1,80 @@
-import Swiper, { Pagination } from 'swiper'
 
-const content = document.querySelector('.main__content')
-const openContentButton = document.querySelector('.main__content-button')
-const imgButton = document.querySelector('.button__image')
-const bthText = document.querySelector('.button__text')
+let arr = []
+const searchInput = document.getElementById('search-input')
+const itemList = document.getElementById('autocom-box')
+const resultList = document.getElementById('results')
+resultList.innerHTML = ""
 
-openContentButton.addEventListener('click', function () {
-  if (content.classList.contains('main__content-more') === true) {
-    content.classList.remove('main__content-more')
-    imgButton.style = 'transform: rotate(0deg)'
-    bthText.textContent = 'Читать далее'
-  } else {
-    content.classList.add('main__content-more')
-    imgButton.style = 'transform: rotate(180deg)'
-    bthText.textContent = 'Скрыть'
+const debounce = (fn, debounceTime) => {
+  let timeout
+  return function () {
+    const fnCall = () => {fn.apply(this, arguments)}
+    clearTimeout(timeout)
+    timeout = setTimeout(fnCall, debounceTime)
   }
-})
+};
 
-const cardBrand = document.querySelector('.brand-card__block')
-const brandButton = document.querySelector('.brand__content-button')
-const brandImgButton = document.querySelector('.brand-card__image')
-const brandThtButton = document.querySelector('.brand-card__text')
-
-brandButton.addEventListener('click', function () {
-  if (cardBrand.classList.contains('brand__card-more') === true) {
-    cardBrand.classList.remove('brand__card-more')
-    brandImgButton.style = 'transform: rotate(0deg)'
-    brandThtButton.textContent = 'Показать ещё'
-  } else {
-    cardBrand.classList.add('brand__card-more')
-    brandImgButton.style = 'transform: rotate(180deg)'
-    brandThtButton.textContent = 'Скрыть'
-  }
-})
-
-const cardTechnique = document.querySelector('.technique-card__block')
-const techniqueButton = document.querySelector('.technique__content-button')
-const techniqueImgButton = document.querySelector('.technique-card__image')
-const techniqueThtButton = document.querySelector('.technique-card__text')
-
-techniqueButton.addEventListener('click', function () {
-  if (cardTechnique.classList.contains('technique-card__more') === true) {
-    cardTechnique.classList.remove('technique-card__more')
-    techniqueImgButton.style = 'transform: rotate(0deg)'
-    techniqueThtButton.textContent = 'Показать ещё'
-  } else {
-    cardTechnique.classList.add('technique-card__more')
-    techniqueImgButton.style = 'transform: rotate(180deg)'
-    techniqueThtButton.textContent = 'Скрыть'
-  }
-})
-
-const popupLeft = document.querySelector('.side-menu__left')
-const openPopupLeftButton = document.querySelector('.header__burger')
-const closePopupLeftButton = document.querySelector('.side-menu__left-cross')
-const bodyBlur = document.querySelector('.body__blur')
-const body = document.querySelector('body')
-
-openPopupLeftButton.addEventListener('click', function () {
-  popupLeft.classList.add('side-menu__left-open')
-  bodyBlur.style = 'visibility: visible'
-  body.style = 'overflow: hidden'
-})
-
-closePopupLeftButton.addEventListener('click', function () {
-  popupLeft.classList.remove('side-menu__left-open')
-  bodyBlur.style = 'visibility: hidden'
-  body.style = 'overflow: scroll'
-})
-
-bodyBlur.addEventListener('click', function () {
-  popupLeft.classList.remove('side-menu__left-open')
-  bodyBlur.style = 'visibility: hidden'
-  body.style = 'overflow: scroll'
-})
-
-const popupCall = document.querySelector('.call-menu')
-const openPopupCall = document.querySelector('.header__phone')
-const closePopupCall = document.querySelector('.call-menu__cross')
-const openPopupCallLeft = document.querySelector('.side-footer__left-phone')
-
-openPopupCall.addEventListener('click', function () {
-  popupCall.classList.add('call-menu__open')
-  bodyBlur.style = 'visibility: visible'
-  body.style = 'overflow: hidden'
-})
-
-openPopupCallLeft.addEventListener('click', function () {
-  popupCall.classList.add('call-menu__open')
-  bodyBlur.style = 'visibility: visible'
-  body.style = 'overflow: hidden'
-})
-
-closePopupCall.addEventListener('click', function () {
-  popupCall.classList.remove('call-menu__open')
-  bodyBlur.style = 'visibility: hidden'
-  body.style = 'overflow: scroll'
-})
-
-bodyBlur.addEventListener('click', function () {
-  popupCall.classList.remove('call-menu__open')
-  Blur.style = 'visibility: hidden'
-  body.style = 'overflow: scroll'
-})
-
-const popupChat = document.querySelector('.feedback-menu')
-const openPopupChat = document.querySelector('.header__chat')
-const closePopupChat = document.querySelector('.feedback-menu__cross')
-const openPopupChatLeft = document.querySelector('.side-footer__left-chat')
-
-openPopupChat.addEventListener('click', function () {
-  popupChat.classList.add('feedback-menu__open')
-  bodyBlur.style = 'visibility: visible'
-  body.style = 'overflow: hidden'
-})
-
-openPopupChatLeft.addEventListener('click', function () {
-  popupChat.classList.add('feedback-menu__open')
-  bodyBlur.style = 'visibility: visible'
-  body.style = 'overflow: hidden'
-})
-
-closePopupChat.addEventListener('click', function () {
-  popupChat.classList.remove('feedback-menu__open')
-  bodyBlur.style = 'visibility: hidden'
-  body.style = 'overflow: scroll'
-})
-
-bodyBlur.addEventListener('click', function () {
-  popupChat.classList.remove('feedback-menu__open')
-  bodyBlur.style = 'visibility: hidden'
-  body.style = 'overflow: scroll'
-})
-
-const sliderBrands = document.querySelector('.swiper')
-const sliderViewTech = document.querySelector('.tech-swiper')
-const sliderPrice = document.querySelector('.price-swiper')
-let mySwiper1
-let mySwiper2
-let mySwiper3
-
-function mobileSliderBrands() {
-  if (window.innerWidth < 768) {
-    mySwiper1 = new Swiper(sliderBrands, {
-      slidesPerView: 'auto',
-      loop: true,
-      slideClass: 'swiper-slide',
-      modules: [Pagination],
-      pagination: {
-        el: '.swiper-pagination',
-        type: 'bullets'
-      }
+searchInput.addEventListener('keyup', debounce((evt) => {
+  evt.preventDefault()
+  searchUsers(evt.target.value)
+    .then((response) => {
+      dataMapping(response)
+      itemList.style.display = 'block'
     })
-    sliderBrands.dataset.mobile = 'true'
-  }
-  if (window.innerWidth >= 768) {
-    sliderBrands.dataset.mobile = 'false'
+}, 400))
 
-    if (sliderBrands.classList.contains('swiper-initialized')) {
-      mySwiper1.destroy()
-    }
+async function searchUsers(evt) {
+    return await fetch(`https://api.github.com/search/repositories?q=${evt}`)
+      .then((response) => response.json())
+      .then((data) => data.items)
+}
+
+const createTemplate = (evt, item) => {
+  evt.preventDefault()
+  const fragment = document.createDocumentFragment()
+  const repository = document.createElement('div')
+  repository.classList.add('repository-card')
+  const nameRepository = document.createElement('p')
+  nameRepository.textContent = `Name: ${item.name}`
+  const ownerRepository = document.createElement('p')
+  ownerRepository.textContent = `Owner: ${item.owner.login}`
+  const starsRepository = document.createElement('p')
+  starsRepository.textContent = `Stars: ${item.stargazers_count}`
+  const deleteButton = document.createElement('div')
+  deleteButton.classList.add('delete_button')
+  deleteButton.onclick = function() {
+    resultList.removeChild(repository)
+  }
+  repository.appendChild(nameRepository)
+  repository.appendChild(ownerRepository)
+  repository.appendChild(starsRepository)
+  repository.appendChild(deleteButton)
+  fragment.appendChild(repository)
+  return fragment
+}
+const dataMapping = (data) => {
+  if (data) {
+    itemList.innerHTML = ""
+    data.slice(0, 5).forEach((item) => {
+      const li = document.createElement('li')
+      li.textContent = item.name
+      itemList.appendChild(li)
+        .addEventListener('click', (e) => {
+          arr.push(createTemplate(e, item))
+            arr.forEach(elem => {
+              if (arr.length <= 3) {
+                resultList.appendChild(elem)
+              }
+            })
+            searchInput.value = ''
+            itemList.style.display = 'none'
+        })
+    })
   }
 }
 
-function mobileSliderViewTech() {
-  if (window.innerWidth < 768) {
-    mySwiper2 = new Swiper(sliderViewTech, {
-      slidesPerView: 'auto',
-      loop: true,
-      slideClass: 'swiper-slide',
-      modules: [Pagination],
-      pagination: {
-        el: '.swiper-pagination',
-        type: 'bullets'
-      }
-    })
-    sliderViewTech.dataset.mobile = 'true'
-  }
-  if (window.innerWidth >= 768) {
-    sliderViewTech.dataset.mobile = 'false'
 
-    if (sliderViewTech.classList.contains('swiper-initialized')) {
-      mySwiper2.destroy()
-    }
-  }
-}
 
-function mobileSliderPrice() {
-  if (window.innerWidth < 768) {
-    mySwiper3 = new Swiper(sliderPrice, {
-      slidesPerView: 'auto',
-      loop: true,
-      slideClass: 'swiper-slide',
-      modules: [Pagination],
-      pagination: {
-        el: '.swiper-pagination',
-        type: 'bullets'
-      }
-    })
-    sliderPrice.dataset.mobile = 'true'
-  }
-  if (window.innerWidth >= 768) {
-    sliderPrice.dataset.mobile = 'false'
 
-    if (sliderPrice.classList.contains('swiper-initialized')) {
-      mySwiper3.destroy()
-    }
-  }
-}
 
-mobileSliderBrands()
-mobileSliderViewTech()
-mobileSliderPrice()
+

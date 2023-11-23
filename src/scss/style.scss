@@ -1,16 +1,22 @@
-@font-face {
-  font-family: 'TT Lakes-Bold';
-  src: url('../fonts/TTLakes-Bold.woff');
-}
+//@font-face {
+//  font-family: 'TT Lakes-Bold';
+//  src: url('../fonts/TTLakes-Bold.woff');
+//}
+//
+//@font-face {
+//  font-family: 'TT Lakes-Medium';
+//  src: url('../fonts/TTLakes-Medium.woff');
+//}
+//
+//@font-face {
+//  font-family: 'TT Lakes-Regular';
+//  src: url('../fonts/TTLakes-Regular.woff');
+//}
 
-@font-face {
-  font-family: 'TT Lakes-Medium';
-  src: url('../fonts/TTLakes-Medium.woff');
-}
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-@font-face {
-  font-family: 'TT Lakes-Regular';
-  src: url('../fonts/TTLakes-Regular.woff');
+body {
+  font-family: 'Roboto', sans-serif;
 }
 
 *,
@@ -38,13 +44,13 @@ dl,
 dd {
   margin: 0;
 }
-body {
-  max-width: 1440px;
-  margin: 0 auto;
-  // overflow-x: hidden;
-  background-color: #f8f8f8;
-}
-
-span {
-  color: #ff3e79;
-}
+//body {
+//  max-width: 1440px;
+//  margin: 0 auto;
+//  // overflow-x: hidden;
+//  background-color: #f8f8f8;
+//}
+//
+//span {
+//  color: #ff3e79;
+//}
