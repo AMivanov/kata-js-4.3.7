@@ -15,18 +15,23 @@ const debounce = (fn, debounceTime) => {
 };
 
 searchInput.addEventListener('keyup', debounce((evt) => {
-  evt.preventDefault()
-  searchUsers(evt.target.value)
-    .then((response) => {
-      dataMapping(response)
-      itemList.style.display = 'block'
-    })
+  if (searchInput.value === '') {
+    return null
+  } else {
+    evt.preventDefault()
+    searchUsers(evt.target.value)
+      .then((response) => {
+        dataMapping(response)
+        itemList.style.display = 'block'
+      })
+  }
 }, 400))
 
 async function searchUsers(evt) {
     return await fetch(`https://api.github.com/search/repositories?q=${evt}`)
       .then((response) => response.json())
       .then((data) => data.items)
+      .catch(err => console.log(err))
 }
 
 const createTemplate = (evt, item) => {
@@ -42,7 +47,7 @@ const createTemplate = (evt, item) => {
   starsRepository.textContent = `Stars: ${item.stargazers_count}`
   const deleteButton = document.createElement('div')
   deleteButton.classList.add('delete_button')
-  deleteButton.onclick = function() {
+  deleteButton.onclick = function(e) {
     resultList.removeChild(repository)
   }
   repository.appendChild(nameRepository)
@@ -62,9 +67,7 @@ const dataMapping = (data) => {
         .addEventListener('click', (e) => {
           arr.push(createTemplate(e, item))
             arr.forEach(elem => {
-              if (arr.length <= 3) {
                 resultList.appendChild(elem)
-              }
             })
             searchInput.value = ''
             itemList.style.display = 'none'
